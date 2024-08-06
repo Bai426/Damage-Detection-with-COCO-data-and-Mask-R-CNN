@@ -47,9 +47,15 @@ class MultipleKVAction(argparse.Action):
 def parse_args():
     parser = argparse.ArgumentParser(
         description='MMDet test (and eval) a model')
-    parser.add_argument('config', help='test config file path')
-    parser.add_argument('checkpoint', help='checkpoint file')
+    parser.add_argument('config', help='test config file path')   ###
+    # parser.add_argument('--config', default='/home/bys2058/mmdetection/configs/albu_example/mask_rcnn_r50_pafpn_1xalbu_attection0505.py',
+    #                     help='train config file path')
+    parser.add_argument('checkpoint', help='checkpoint file')    ###
+    # parser.add_argument('--checkpoint', default='/home/bys2058/work_dirs/mask_rcnn_r50_pafpn_1xalbu_attection0505/latest.pth',
+    #                     help='the dir to save logs and models')
     parser.add_argument('--out', help='output result file in pickle format')
+    # parser.add_argument('--out', default='/home/bys2058/work_dirs/mask_rcnn_r50_pafpn_1xalbu_attection0505/results.pkl',
+    #                     help='output result file in pickle format')
     parser.add_argument(
         '--fuse_conv_bn',
         action='store_true',
@@ -63,6 +69,7 @@ def parse_args():
         'submit it to the test server')
     parser.add_argument(
         '--eval',
+        # "-bbox",                             ### modification
         type=str,
         nargs='+',
         help='evaluation metrics, which depends on the dataset, e.g., "bbox",'
@@ -78,6 +85,12 @@ def parse_args():
         'workers, available when gpu_collect is not specified')
     parser.add_argument(
         '--options', nargs='+', action=MultipleKVAction, help='custom options')
+    # parser.add_argument(
+    #     '--options',
+    #     default="classwise=True",                 ###
+    #     nargs='+',
+    #     action=MultipleKVAction,
+    #     help='custom options')    ###
     parser.add_argument(
         '--launcher',
         choices=['none', 'pytorch', 'slurm', 'mpi'],

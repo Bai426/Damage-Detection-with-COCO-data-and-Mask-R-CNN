@@ -2,6 +2,8 @@
 
 set -x
 
+PYTHONPATH="$(dirname "$0")/..":$PYTHONPATH   ### new updating 2020/05/12.
+
 PARTITION=$1
 JOB_NAME=$2
 CONFIG=$3

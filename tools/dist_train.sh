@@ -2,6 +2,8 @@
 
 PYTHON=${PYTHON:-"python"}
 
+PYTHONPATH="$(dirname "$0")/..":$PYTHONPATH   ## updating 2020/05/12
+
 CONFIG=$1
 GPUS=$2
 PORT=${PORT:-29500}

@@ -92,16 +92,28 @@ def train_detector(model,
 
     # prepare data loaders
     dataset = dataset if isinstance(dataset, (list, tuple)) else [dataset]
-    data_loaders = [
-        build_dataloader(
+
+    data_loaders = [build_dataloader(
             ds,
             cfg.data.imgs_per_gpu,
             cfg.data.workers_per_gpu,
             # cfg.gpus will be ignored if distributed
             len(cfg.gpu_ids),
             dist=distributed,
-            seed=cfg.seed) for ds in dataset
-    ]
+            seed=cfg.seed) for ds in dataset]
+
+
+    # test
+    # for i, data in enumerate(data_loaders[0]):
+    #     print(i)
+    #
+    #     a = 1
+    #
+    #
+    #
+    # aa = iter(data_loaders)
+    # bb = next(aa)
+
 
     # put model on gpus
     if distributed:

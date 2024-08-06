@@ -17,7 +17,7 @@ model = dict(
         type='SSDHead',
         input_size=input_size,
         in_channels=(512, 1024, 512, 256, 256, 256, 256),
-        num_classes=81,
+        num_classes=2,
         anchor_strides=(8, 16, 32, 64, 128, 256, 512),
         basesize_ratio_range=(0.1, 0.9),
         anchor_ratios=([2], [2, 3], [2, 3], [2, 3], [2, 3], [2], [2]),
@@ -45,7 +45,7 @@ test_cfg = dict(
 # model training and testing settings
 # dataset settings
 dataset_type = 'CocoDataset'
-data_root = 'data/coco/'
+data_root = '/home/bys2058/mmdetection/data/cracksdetection/'
 img_norm_cfg = dict(mean=[123.675, 116.28, 103.53], std=[1, 1, 1], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile', to_float32=True),
@@ -92,18 +92,18 @@ data = dict(
         times=5,
         dataset=dict(
             type=dataset_type,
-            ann_file=data_root + 'annotations/instances_train2017.json',
-            img_prefix=data_root + 'train2017/',
+            ann_file=data_root + 'selected_cracking-9744750ca-final.json',
+            img_prefix=data_root + 'selected_cracking-9744750ca-final/',
             pipeline=train_pipeline)),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_val2017.json',
-        img_prefix=data_root + 'val2017/',
+        ann_file=data_root + 'SDD4-28.json',
+        img_prefix=data_root + '52_cracking_image/',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'annotations/instances_val2017.json',
-        img_prefix=data_root + 'val2017/',
+        ann_file=data_root + 'SDD4-28.json',
+        img_prefix=data_root + '52_cracking_image/',
         pipeline=test_pipeline))
 evaluation = dict(interval=1, metric='bbox')
 # optimizer
@@ -114,7 +114,7 @@ lr_config = dict(
     policy='step',
     warmup='linear',
     warmup_iters=500,
-    warmup_ratio=1.0 / 3,
+    warmup_ratio=1.0 / 4,
     step=[16, 22])
 checkpoint_config = dict(interval=1)
 # yapf:disable

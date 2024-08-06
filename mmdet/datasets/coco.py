@@ -1,3 +1,4 @@
+import itertools       ####
 import logging
 import os.path as osp
 import tempfile
@@ -6,6 +7,7 @@ import mmcv
 import numpy as np
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
+from terminaltables import AsciiTable              ###
 
 from mmdet.core import eval_recalls
 from mmdet.utils import print_log
@@ -16,7 +18,8 @@ from .registry import DATASETS
 @DATASETS.register_module
 class CocoDataset(CustomDataset):
 
-    CLASSES = ('person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
+    CLASSES = ('motion-1', 't-table', 'motion-2', 'motion-3', 'cracks', 'spalling', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
+    # CLASSES = ('cracks', 'spalling', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus',
                'train', 'truck', 'boat', 'traffic_light', 'fire_hydrant',
                'stop_sign', 'parking_meter', 'bench', 'bird', 'cat', 'dog',
                'horse', 'sheep', 'cow', 'elephant', 'bear', 'zebra', 'giraffe',
@@ -323,6 +326,7 @@ class CocoDataset(CustomDataset):
             if metric not in allowed_metrics:
                 raise KeyError('metric {} is not supported'.format(metric))
 
+        print(len(results))
         result_files, tmp_dir = self.format_results(results, jsonfile_prefix)
 
         eval_results = {}
@@ -376,7 +380,43 @@ class CocoDataset(CustomDataset):
                 cocoEval.accumulate()
                 cocoEval.summarize()
                 if classwise:  # Compute per-category AP
-                    pass  # TODO
+                    # pass  # TODO  ###
+                    ####   begin for modification
+                    # Compute per-category AP
+                    # from https://github.com/facebookresearch/detectron2/
+                    precisions = cocoEval.eval['precision']
+                    # precision: (iou, recall, cls, area range, max dets)
+                    assert len(self.cat_ids) == precisions.shape[2]
+                    print(len(self.cat_ids))
+
+                    results_per_category = []
+                    for idx, catId in enumerate(self.cat_ids):
+                        # area range index 0: all area ranges
+                        # max dets index -1: typically 100 per image
+                        nm = self.coco.loadCats(catId)[0]
+                        precision = precisions[:, :, idx, 0, -1]
+                        precision = precision[precision > -1]
+                        if precision.size:
+                            ap = np.mean(precision)
+                        else:
+                            ap = float('nan')
+                        results_per_category.append(
+                            ('{}'.format(nm['name']),
+                             '{:0.3f}'.format(float(ap * 100))))
+
+                    N_COLS = min(6, len(results_per_category) * 2)
+
+                    results_flatten = list(
+                        itertools.chain(*results_per_category))
+                    headers = ['category', 'AP'] * (N_COLS // 2)
+                    results_2d = itertools.zip_longest(
+                        *[results_flatten[i::N_COLS] for i in range(N_COLS)])
+                    table_data = [headers]
+                    table_data += [result for result in results_2d]
+                    table = AsciiTable(table_data)
+                    # print(table.table)
+                    print_log('\n' + table.table, logger=logger)
+                    ##### end of modification      #####
                 metric_items = [
                     'mAP', 'mAP_50', 'mAP_75', 'mAP_s', 'mAP_m', 'mAP_l'
                 ]

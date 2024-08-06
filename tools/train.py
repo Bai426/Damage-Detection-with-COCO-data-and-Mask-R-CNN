@@ -5,6 +5,8 @@ import os
 import os.path as osp
 import time
 
+# os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
+
 import mmcv
 import torch
 from mmcv import Config
@@ -17,10 +19,14 @@ from mmdet.models import build_detector
 from mmdet.utils import collect_env, get_root_logger
 
 
+##### modify CLASSES in 'coco.py: class CocoDataset(CustomDataset)'
 def parse_args():
     parser = argparse.ArgumentParser(description='Train a detector')
-    parser.add_argument('config', help='train config file path')
-    parser.add_argument('--work_dir', help='the dir to save logs and models')
+    # parser.add_argument('config', help='train config file path')
+    parser.add_argument('--config', default='/home/bys2058/mmdetection/configs/hrnet/mask_rcnn_hrnetv2p_NSF_Cannon_Garage_5th_column_5_1_2022.py',
+                        help='train config file path')
+    parser.add_argument('--work_dir', default='/home/bys2058/work_dirs/mask_rcnn_hrnetv2p_NSF_Cannon_Garage_5th_column_5_1_2022',
+                        help='the dir to save logs and models')
     parser.add_argument(
         '--resume_from', help='the checkpoint file to resume from')
     parser.add_argument(
@@ -124,6 +130,7 @@ def main():
         cfg.model, train_cfg=cfg.train_cfg, test_cfg=cfg.test_cfg)
 
     datasets = [build_dataset(cfg.data.train)]
+
     if len(cfg.workflow) == 2:
         val_dataset = copy.deepcopy(cfg.data.val)
         val_dataset.pipeline = cfg.data.train.pipeline
@@ -137,6 +144,17 @@ def main():
             CLASSES=datasets[0].CLASSES)
     # add an attribute for visualization convenience
     model.CLASSES = datasets[0].CLASSES
+
+
+    #
+    # [i for i, data in enumerate(datasets[0])]
+    # for i, data in enumerate(datasets[0]):
+    #     # print(data)
+    #
+    #     a = 1
+
+
+
     train_detector(
         model,
         datasets,
