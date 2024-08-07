@@ -20,20 +20,23 @@ At last I also installed the optional files (To use optional dependencies like 
 pip install -r requirements/optional.txt
 
 2. Data preparation
+   
 a. coco-annotator (https://github.com/jsbroks/coco-annotator) was used to label the data. It was run with a docker. So please follow the instruction of coco-annotator to install and implement the tools for data labeling.
 
 b. Most images were collected from the searching from website, where image sizes vary from 300x300 to 4600x4600. But some are from Dr. Chul Min Yeum's data (about 1000 images).
 
 c. The data format is COCO.
 
-4. Training
+3. Training
+
 a. Configuration files for training spalling and cracking detection are in this path: /mmdetection/configs/cracking_spalling/ .
 
 b. Datasets are available here: https://github.com/Bai426/StructureCrackDataset.
 
 c. Modified ./tools/train.py with the paths of configuration file, images, and annotation for training. The hyperparameters should be fine tuned here.
 
-6. Testing
+4. Testing
+
 Testing file is in ./tools/test/py.
 
 Please read the following papers for more information. If you think this repo is useful to your research, please cite them:
