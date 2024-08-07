@@ -34,6 +34,7 @@ Testing file is in ./tools/test/py.
 
 Please read the following papers for more information. 
 If you think this repo is useful to your research, please cite them:
+
 @Article{bai-2021-isprs,
   title={Detecting Cracks and Spalling Automatically in Extreme Events by End-to-end Deep Learning Frameworks},
   author={Bai, Yongsheng and Sezen, Halil and Yilmaz, Alper},
@@ -43,6 +44,7 @@ If you think this repo is useful to your research, please cite them:
   year={2021},
   publisher={Copernicus GmbH}
 }
+
 @article{bai2022engineering,
   title={Engineering deep learning methods on automatic detection of damage in infrastructure due to extreme events},
   author={Bai, Yongsheng and Zha, Bing and Sezen, Halil and Yilmaz, Alper},
