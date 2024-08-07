@@ -1,4 +1,4 @@
-# Damage-Detection-with-COCO-data-and-Mask-R-CNN
+# Damage (spalling and cracks)-Detection-with-COCO-data-and-Mask-R-CNN
 1. Install mmdetection
 
 a. Create a conda virtual environment and activate it.
@@ -31,7 +31,7 @@ c. The data format is COCO.
 
 a. Configuration files for training spalling and cracking detection are in this path: /mmdetection/configs/cracking_spalling/ .
 
-b. Datasets are available here: https://github.com/Bai426/StructureCrackDataset.
+b. Datasets (StructureCrackDataset) are available here: https://github.com/Bai426/StructureCrackDataset.
 
 c. Modified ./tools/train.py with the paths of configuration file, images, and annotation for training. The hyperparameters should be fine tuned here.
 
